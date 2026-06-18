@@ -74,12 +74,10 @@ export default function PasskeyPage() {
 					bottom: 0,
 					left: 0,
 					backgroundImage: `url(${isDesktop ? cloudLg : cloudXs})`,
-					backgroundPosition: isDesktop ? '-397.145px -690.044px' : 'center',
-					backgroundSize: isDesktop ? '156.57% 221.563%' : 'cover',
+					backgroundSize: 'cover',
 					backgroundRepeat: 'no-repeat',
-					opacity: 0.5,
-					mixBlendMode: 'color-burn',
-					filter: 'blur(10px)',
+					opacity: 0.1,
+					mixBlendMode: 'hard-light',
 					pointerEvents: 'none',
 				}}
 			/>
