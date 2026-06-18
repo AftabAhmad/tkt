@@ -22,6 +22,8 @@ app.post('/api/v1/verify-passkey', (req, res) => {
   }
 
   if (passkey !== PASSKEY) {
+    console.log('passkey', passkey);
+    console.log('PASSKEY', PASSKEY);
     return res.status(401).json({ success: false, message: 'Invalid passkey. Please try again.' });
   }
 
