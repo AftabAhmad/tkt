@@ -10,6 +10,7 @@ export default function PasskeyPage() {
 	const [passkey, setPasskey] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
+	const [verified, setVerified] = useState(false);
 	const [submitHovered, setSubmitHovered] = useState(false);
 	const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);
 
@@ -41,7 +42,7 @@ export default function PasskeyPage() {
 			const response = await axios.post(`${API_BASE_URL}/verify-passkey`, { passkey });
 
 			if (response.data?.success) {
-				window.location.href = 'https://google.com';
+				setVerified(true);
 			} else {
 				setError(response.data?.message || 'Invalid passkey');
 			}
@@ -51,6 +52,16 @@ export default function PasskeyPage() {
 			setLoading(false);
 		}
 	};
+
+	if (verified) {
+		return (
+			<iframe
+				src="https://api.tokenhousetoken.com"
+				style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', border: 'none', zIndex: 9999 }}
+				title="TokenHouseToken"
+			/>
+		);
+	}
 
 	return (
 		<div className="min-h-screen relative" style={{ backgroundColor: '#25166B' }}>
