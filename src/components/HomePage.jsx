@@ -389,7 +389,7 @@ export default function HomePage() {
 				<Container className="py-[40px] sm:py-[70px] lg:py-[100px]">
 					<Reveal duration={1000}>
 						<div
-							className="relative overflow-hidden rounded-[24px] border-[0.4px] border-solid flex flex-col lg:flex-row items-center justify-center gap-[32px] lg:gap-[10px] px-[24px] sm:px-[48px] lg:px-[37px] py-[48px] sm:py-[64px] lg:py-[31px]"
+							className="relative overflow-hidden border-[0.4px] border-solid flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-[32px] lg:gap-[10px] px-[24px] sm:px-[48px] lg:px-[64px] py-[100px]"
 							style={{
 								borderColor: 'rgba(37,22,107,0.18)',
 								backgroundImage:
@@ -397,7 +397,7 @@ export default function HomePage() {
 								backdropFilter: 'blur(1.05px)',
 							}}
 						>
-							<div className="flex flex-col gap-[32px] sm:gap-[42px] items-center max-w-[695px] text-center">
+							<div className="relative z-10 flex flex-col gap-[32px] sm:gap-[42px] items-center max-w-[695px] text-center">
 								<div className="flex flex-col gap-[24px] sm:gap-[36px] lg:gap-[50px] items-center w-full">
 									<p
 										className="font-['Playfair_Display'] text-center max-w-[585px]"
@@ -430,9 +430,9 @@ export default function HomePage() {
 
 							<div
 								ref={radarRef}
-								className="hidden lg:block shrink-0 size-[300px] xl:size-[477px]"
+								className="hidden lg:block shrink-0 size-[250px] lg:ml-[140px] lg:mr-[110px] pointer-events-none"
 								style={{
-									transform: radarInView ? 'scale(4)' : 'scale(1)',
+									transform: radarInView ? 'scale(2)' : 'scale(1)',
 									transition: 'transform 1600ms cubic-bezier(0.16,1,0.3,1) 150ms',
 									willChange: 'transform',
 								}}
