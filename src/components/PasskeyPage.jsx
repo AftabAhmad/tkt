@@ -1,26 +1,33 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
-import logo from '../images/tokenhousetoken-logo.webp';
+import logoMark from '../images/logo-mark-white.svg';
 import cloudLg from '../images/clouds.webp';
-import cloudXs from '../images/cloud-xs.webp';
 
 const API_BASE_URL = import.meta.env.DEV ? 'http://localhost:3000/api/v1' : '/api/v1';
 
-export default function PasskeyPage() {
+const NAVY = '#25166B';
+
+// Decorative placeholder shapes only. No real homepage content lives here, so nothing
+// readable can be extracted from the DOM or a screenshot of this page.
+const GHOST_BLOCKS = [
+	{ top: '4%', left: '5%', w: '7%', h: '4%', r: 8 },
+	{ top: '4%', right: '5%', w: '18%', h: '4%', r: 44 },
+	{ top: '16%', left: '12%', w: '76%', h: '9%', r: 12 },
+	{ top: '28%', left: '20%', w: '60%', h: '9%', r: 12 },
+	{ top: '44%', left: '5%', w: '24%', h: '3%', r: 6 },
+	{ top: '44%', right: '5%', w: '30%', h: '3%', r: 6 },
+	{ top: '52%', left: '18%', w: '64%', h: '14%', r: 16 },
+	{ top: '72%', left: '5%', w: '20%', h: '10%', r: 12 },
+	{ top: '72%', left: '36%', w: '34%', h: '2.5%', r: 6 },
+	{ top: '78%', left: '36%', w: '28%', h: '2.5%', r: 6 },
+	{ top: '90%', left: '5%', w: '90%', h: '6%', r: 20 },
+];
+
+export default function PasskeyPage({ onVerified }) {
 	const [passkey, setPasskey] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
-	const [verified, setVerified] = useState(false);
 	const [submitHovered, setSubmitHovered] = useState(false);
-	const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);
-
-	useEffect(() => {
-		const handleResize = () => {
-			setIsDesktop(window.innerWidth >= 640);
-		};
-		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
-	}, []);
 
 	const handlePasskeyChange = (e) => {
 		setPasskey(e.target.value);
@@ -39,10 +46,10 @@ export default function PasskeyPage() {
 		setError('');
 
 		try {
-			const response = await axios.post(`${API_BASE_URL}/verify-passkey`, { passkey });
+			const response = await axios.post(`${API_BASE_URL}/verify-passkey`, { passkey }, { withCredentials: true });
 
 			if (response.data?.success) {
-				setVerified(true);
+				onVerified();
 			} else {
 				setError(response.data?.message || 'Invalid passkey');
 			}
@@ -53,150 +60,118 @@ export default function PasskeyPage() {
 		}
 	};
 
-	if (verified) {
-		return (
-			<iframe
-				src="https://classy-cdkbd7wm.peachweb.site/"
-				style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', border: 'none', zIndex: 9999 }}
-				title="TokenHouseToken"
-			/>
-		);
-	}
-
 	return (
-		<div className="min-h-screen relative" style={{ backgroundColor: '#25166B' }}>
-			{/* Cloud background layer */}
-			<div
-				style={{
-					position: 'absolute',
-					top: 0,
-					right: 0,
-					bottom: 0,
-					left: 0,
-					backgroundImage: `url(${isDesktop ? cloudLg : cloudXs})`,
-					backgroundSize: 'cover',
-					backgroundRepeat: 'no-repeat',
-					opacity: 0.1,
-					mixBlendMode: 'hard-light',
-					pointerEvents: 'none',
-				}}
-			/>
-			{/* Page content */}
-			<div
-				className="min-h-screen flex items-center justify-center py-16 px-4 relative"
-			>
-				{/* Card */}
-				<div className="w-full" style={{ maxWidth: '32rem' }}>
+		<div className="min-h-screen relative overflow-hidden">
+			{/* Blurred decorative backdrop (placeholder shapes, no real content) */}
+			<div aria-hidden className="pointer-events-none absolute inset-0 select-none" style={{ filter: 'blur(16px)', transform: 'scale(1.08)' }}>
+				<div
+					className="absolute inset-0"
+					style={{
+						backgroundImage: `url(${cloudLg})`,
+						backgroundSize: 'cover',
+						backgroundPosition: 'center top',
+						opacity: 0.35,
+						mixBlendMode: 'soft-light',
+					}}
+				/>
+				{GHOST_BLOCKS.map((b, i) => (
 					<div
-						className="overflow-hidden"
+						key={i}
+						className="absolute"
 						style={{
-							borderRadius: '22px',
-							border: '0.3px solid rgba(231, 240, 255, 0.52)',
-							background: 'rgba(0, 0, 0, 0.08)',
-							backdropFilter: 'blur(2px)',
+							top: b.top,
+							left: b.left,
+							right: b.right,
+							width: b.w,
+							height: b.h,
+							borderRadius: b.r,
+							backgroundColor: NAVY,
+							opacity: i % 3 === 0 ? 0.32 : 0.16,
 						}}
-					>
-						{/* Card body - centered content */}
-						<div
-							className="px-6 sm:px-8 py-12 sm:py-16 flex flex-col items-center justify-center text-center"
-						>
-							{/* Logo placeholder */}
-							<div className="mb-8">
-								<div
-									className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto"
-								>
-									<img
-										src={logo}
-										alt="Logo"
-										className="h-10 sm:h-12 object-contain"
-										onError={(e) => {
-											e.target.style.display = 'none';
-											const fallback = document.createElement('span');
-											fallback.textContent = 'TKT';
-											fallback.style.color = '#FFFFFF';
-											fallback.style.fontSize = '32px';
-											fallback.style.fontWeight = 'bold';
-											e.target.parentElement.appendChild(fallback);
-										}}
-									/>
-								</div>
-							</div>
+					/>
+				))}
+			</div>
 
-							{/* Heading */}
-							<h1
-								className="mb-8 text-center"
-								style={{
-									color: '#FFFFFF',
-									fontFamily: '"DM Sans", sans-serif',
-									fontSize: 'max(34px, min(5vw, 42px))',
-									fontWeight: 400,
-									lineHeight: '114%',
-									letterSpacing: 'max(-1.02px, min(-0.76vw, -1.26px))',
-								}}
+			{/* Card */}
+			<div className="min-h-screen flex items-center justify-center py-16 px-4 relative">
+				<div
+					className="w-full flex flex-col items-center justify-between gap-[48px] px-[24px] sm:px-[35px] py-[40px] sm:py-[49px]"
+					style={{
+						maxWidth: '518px',
+						borderRadius: '22px',
+						border: '0.3px solid #FFFFFF',
+						background: 'rgba(37, 22, 107, 0.9)',
+						backdropFilter: 'blur(2px)',
+						boxShadow: '16px 18px 32.4px rgba(0, 0, 0, 0.33)',
+					}}
+				>
+					<div className="flex flex-col items-center gap-[37px] w-full">
+						<div className="flex items-center gap-[10px]">
+							<img src={logoMark} alt="" className="h-[43px] w-auto" />
+							<p
+								className="font-['JetBrains_Mono'] text-white text-[12px] leading-none tracking-[1.08px] uppercase"
+								style={{ lineHeight: 1.1 }}
 							>
-								This area is restricted to<br />invited guests
-							</h1>
-
-							{/* Form */}
-							<form onSubmit={handleSubmit} className="w-full space-y-6">
-
-								{/* Passkey Input */}
-								<div>
-									<input
-										type="password"
-										value={passkey}
-										onChange={handlePasskeyChange}
-										placeholder="Enter passkey"
-										className="w-full px-4 py-4 text-center border-2 rounded-full bg-transparent focus:outline-none focus:ring-0 transition-colors"
-										style={{
-											borderColor: 'rgba(255, 255, 255, 0.3)',
-											color: '#FFFFFF',
-											fontFamily: '"DM Sans", sans-serif',
-											fontSize: '16px',
-											fontWeight: 700,
-											lineHeight: '100%',
-											letterSpacing: '-0.32px',
-										}}
-										onFocus={(e) => {
-											e.target.style.borderColor = 'rgba(255, 255, 255, 0.6)';
-										}}
-										onBlur={(e) => {
-											e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-										}}
-										disabled={loading}
-									/>
-								</div>
-
-								{/* Error message */}
-								{error && (
-									<p className="text-sm text-red-400 text-center">{error}</p>
-								)}
-
-								{/* Submit button */}
-								<div className="pt-4">
-									<button
-										type="submit"
-										disabled={loading || !passkey.trim()}
-										className="w-full py-4 px-6 rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-										style={{
-											backgroundColor: submitHovered && !loading && passkey.trim() ? '#000000' : '#FFFFFF',
-											color: submitHovered && !loading && passkey.trim() ? '#FFFFFF' : '#25166B',
-											fontFamily: '"DM Sans", sans-serif',
-											fontSize: '16px',
-											fontWeight: 700,
-											lineHeight: '100%',
-											letterSpacing: '-0.32px',
-										}}
-										onMouseEnter={() => setSubmitHovered(true)}
-										onMouseLeave={() => setSubmitHovered(false)}
-									>
-										{loading ? 'Verifying...' : 'Enter Passkey'}
-									</button>
-								</div>
-
-							</form>
+								Token<br />House<br />Token
+							</p>
 						</div>
+						<h1
+							className="text-center text-white"
+							style={{
+								fontFamily: '"DM Sans", sans-serif',
+								fontSize: 'max(30px, min(8vw, 42px))',
+								fontWeight: 400,
+								lineHeight: 1.14,
+								letterSpacing: '-0.03em',
+								fontVariationSettings: '"opsz" 14',
+							}}
+						>
+							This area is restricted to invited guests.
+						</h1>
 					</div>
+
+					<form onSubmit={handleSubmit} className="w-full flex flex-col gap-[15px]">
+						<input
+							type="password"
+							value={passkey}
+							onChange={handlePasskeyChange}
+							placeholder="0 0 0 0"
+							autoComplete="off"
+							disabled={loading}
+							className="w-full h-[61px] px-4 text-center bg-transparent outline-none placeholder:text-white placeholder:opacity-100"
+							style={{
+								border: '0.4px solid #FFFFFF',
+								borderRadius: '61px',
+								backgroundColor: 'rgba(51, 51, 56, 0.14)',
+								backdropFilter: 'blur(1.5px)',
+								color: '#FFFFFF',
+								fontFamily: '"DM Sans", sans-serif',
+								fontSize: '16px',
+								fontWeight: 700,
+								letterSpacing: '-0.32px',
+							}}
+						/>
+
+						{error && <p className="text-sm text-red-300 text-center">{error}</p>}
+
+						<button
+							type="submit"
+							disabled={loading || !passkey.trim()}
+							onMouseEnter={() => setSubmitHovered(true)}
+							onMouseLeave={() => setSubmitHovered(false)}
+							className="w-full h-[60px] rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+							style={{
+								backgroundColor: submitHovered && !loading && passkey.trim() ? '#000000' : '#FFFFFF',
+								color: submitHovered && !loading && passkey.trim() ? '#FFFFFF' : NAVY,
+								fontFamily: '"DM Sans", sans-serif',
+								fontSize: '16px',
+								fontWeight: 700,
+								letterSpacing: '-0.32px',
+							}}
+						>
+							{loading ? 'Verifying...' : 'Enter Passkey'}
+						</button>
+					</form>
 				</div>
 			</div>
 		</div>
