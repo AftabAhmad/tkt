@@ -140,7 +140,7 @@ function DividerRow({ index, title, description, icon, indentClass = '', delay =
 	return (
 		<Reveal delay={delay} className={`w-full ${indentClass}`} {...revealProps}>
 			<div
-				className={`group/row flex items-start gap-[18px] sm:gap-[27px] py-[26px] sm:py-[32px] border-t border-solid lg:opacity-50 lg:hover:opacity-100 transition-[opacity,transform] duration-500 ease-out ${slide ? 'lg:hover:translate-x-[28px]' : ''}`}
+				className={`group/row flex items-start gap-[18px] sm:gap-[27px] py-[26px] sm:py-[32px] border-t border-solid lg:opacity-50 lg:hover:opacity-100 transition-[opacity,transform] duration-500 ease-out ${slide ? 'lg:hover:translate-x-[28px]' : 'lg:pb-[92px]'}`}
 				style={{ borderColor: 'rgba(0,0,0,0.5)' }}
 			>
 				{index && (
@@ -160,7 +160,7 @@ function DividerRow({ index, title, description, icon, indentClass = '', delay =
 					</p>
 					{icon && <img src={icon} alt="" className="sm:hidden size-[96px] -ml-[8px] -my-[6px] opacity-100" />}
 					<p
-						className={`font-['DM_Sans'] font-medium leading-[1.14] text-[15px] sm:text-[18px] lg:text-[20px] max-w-[525px] transition-transform duration-500 ease-out ${slide ? '' : 'lg:-translate-y-[14px] lg:group-hover/row:translate-y-0'}`}
+						className={`font-['DM_Sans'] font-medium leading-[1.14] text-[15px] sm:text-[18px] lg:text-[20px] max-w-[525px] transition-[margin]  duration-500 ease-out ${slide ? '' : 'lg:-mt-[28px] lg:group-hover/row:mt-[42px]'}`}
 						style={{ color: INK, letterSpacing: '-0.05em', fontVariationSettings: '"opsz" 14' }}
 					>
 						{description}
@@ -432,7 +432,7 @@ export default function HomePage() {
 								ref={radarRef}
 								className="hidden lg:block shrink-0 size-[300px] xl:size-[477px]"
 								style={{
-									transform: radarInView ? 'scale(1.2)' : 'scale(0.6)',
+									transform: radarInView ? 'scale(4)' : 'scale(1)',
 									transition: 'transform 1600ms cubic-bezier(0.16,1,0.3,1) 150ms',
 									willChange: 'transform',
 								}}
@@ -441,7 +441,6 @@ export default function HomePage() {
 									src={iconRadarLarge}
 									alt=""
 									className="size-full opacity-70"
-									style={{ animation: 'spin-slow 70s linear infinite' }}
 								/>
 							</div>
 						</div>
