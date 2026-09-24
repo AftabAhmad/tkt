@@ -41,7 +41,7 @@ function VaultButton({ children, className = '', delay = 0, href = VAULT_URL, ex
 			<a
 				href={href}
 				{...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-				className={`vault-btn group inline-flex items-center justify-center ${compact ? 'gap-[6px] h-[40px] px-[14px] sm:gap-[10px] sm:h-[47px] sm:px-[36px]' : 'gap-[10px] h-[47px] px-[28px] sm:px-[36px]'} py-[10px] rounded-[44px] border-[0.3px] border-solid border-white backdrop-blur-[5.7px] transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98] ${className}`}
+				className={`vault-btn group inline-flex items-center justify-center ${compact ? 'gap-[6px] h-[40px] px-[14px] sm:gap-[10px] sm:h-[47px] sm:px-[36px]' : 'gap-[10px] h-[47px] px-[28px] sm:px-[36px]'} py-[10px] rounded-[44px] border-[0.3px] border-solid border-white backdrop-blur-[5.7px] transition-transform duration-300 active:scale-[0.98] ${className}`}
 				style={{
 					backgroundImage:
 						'linear-gradient(82.46deg, rgba(0,0,0,0.47) 34.278%, rgba(32,32,32,0.47) 61.279%, rgba(102,102,102,0.47) 92.672%)',
@@ -389,9 +389,8 @@ export default function HomePage() {
 				<Container className="py-[40px] sm:py-[70px] lg:py-[100px]">
 					<Reveal duration={1000}>
 						<div
-							className="relative overflow-hidden border-[0.4px] border-solid flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-[32px] lg:gap-[10px] px-[24px] sm:px-[48px] lg:px-[64px] py-[100px]"
+							className="relative overflow-hidden flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-[32px] lg:gap-[10px] px-[24px] sm:px-[48px] lg:px-[64px] py-[100px]"
 							style={{
-								borderColor: 'rgba(37,22,107,0.18)',
 								backgroundImage:
 									'linear-gradient(206.39deg, rgba(37,22,107,0.05) 19.321%, rgba(37,22,107,0) 68.212%)',
 								backdropFilter: 'blur(1.05px)',
